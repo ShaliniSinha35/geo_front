@@ -25,7 +25,7 @@ import {
   
   const CompleteProjects = ({navigation}) => {
   
-    const {employeeId} = useAuth()
+    const {employeeId,projectAdded} = useAuth()
   
     const [projects,setProjects] = useState([])
   
@@ -56,7 +56,7 @@ import {
     useEffect(()=>{ 
        getProjectDetails()
   
-    },[])
+    },[projectAdded])
   
     return (
   

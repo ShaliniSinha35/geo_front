@@ -9,7 +9,7 @@ const ProjectAssign = ({navigation}) => {
 
     const width=Dimensions.get('screen').width
 
-    const {employeeId}= useAuth()
+    const {employeeId,projectAdded} = useAuth()
 
 
     const [assignProjectsDetails,setProject]= useState([])

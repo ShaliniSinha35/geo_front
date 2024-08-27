@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }) => {
   const [employee,setEmployee]= useState(null)
   const [employeeId, setEmployeeId]=useState('')
 
+  const [projectAdded,setProjectAdded]= useState(false)
+
 
 
   const isAlreadyLogin =async()=>{
@@ -49,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoginValue, login, logout,isAlreadyLogin,employee,employeeId }}>
+    <AuthContext.Provider value={{ isLoginValue, login, logout,isAlreadyLogin,employee,employeeId,projectAdded,setProjectAdded }}>
       {children}
     </AuthContext.Provider>
   );

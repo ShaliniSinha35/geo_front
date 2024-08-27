@@ -44,7 +44,7 @@ const ProjectsScreen = ({navigation}) => {
   //   })
   
   //   const data = res.data;
-  //   console.log("42",data)
+
   //   setProjects(data)
     
   //   // console.log("project details data",data)
@@ -94,20 +94,20 @@ const ProjectsScreen = ({navigation}) => {
 
 projects &&
       
-        
-      
+    
+    
 
         <View style={{width:Dimensions.get('screen').width,paddingBottom:20}}>
         
-   
+   { console.log("102",projects.image_url)}
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {
-        console.log(`https://pmksybihar.info/geo/upload/app/${projects.image_url}`)
+        console.log(`https://pmksybihar.info/upload/app/${projects.image_url}`)
       }
     <ImageBackground
       style={{ width:Dimensions.get('screen').width, height:350, marginTop: 20, resizeMode: "contain" }}
-      source={{ uri: `https://pmksybihar.info/geo/upload/app/${projects.image_url}` }}
+      source={{ uri: `https://pmksybihar.info/upload/app/${projects.image_url}` }}
      
       key={projects.id}
       imageStyle={{borderRadius:20}}

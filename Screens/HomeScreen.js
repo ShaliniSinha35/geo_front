@@ -5,7 +5,8 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
-import { Camera } from 'expo-camera';
+// import { Camera } from 'expo-camera';
+import { Camera, CameraType } from 'expo-camera/legacy';
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
 import uuid from 'react-native-uuid';
@@ -30,10 +31,12 @@ import { useRoute } from '@react-navigation/native';
 const HomeScreen = ({ navigation }) => {
 
   const route = useRoute()
+  const {setProjectAdded} = useAuth()
 
   // console.log(route)
 
-
+  const [type, setType] = useState(CameraType.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
 
   const [assignDist, setAssignDist] = useState('')
   const [showInput, setInput]= useState(false)
@@ -400,7 +403,7 @@ const HomeScreen = ({ navigation }) => {
           },
           (newLocation) => {
             // console.log("Location:", newLocation.coords);
-            // console.log("Accuracy:", newLocation.coords.accuracy);
+            // // console.log("Accuracy:", newLocation.coords.accuracy);
             setLocation(newLocation.coords);
           }
         );
@@ -424,7 +427,7 @@ const HomeScreen = ({ navigation }) => {
 
 
 
-    // console.log("107", imageArray.length)
+    console.log("107", imageArray.length)
 
     if (imageArray.length >= 5) {
       Alert.alert(
@@ -624,7 +627,7 @@ const HomeScreen = ({ navigation }) => {
 
           for (let i = 0; i < imageArray.length; i++) {
             console.log("442", imageArray[i].uri)
-            uploadImage(imageArray[i].uri, response.data)
+            uploadImage(imageArray[i].uri, workId,i, response.data)
           }
         }
 
@@ -656,6 +659,8 @@ const HomeScreen = ({ navigation }) => {
         setImageArray([])
 
         navigation.navigate("Home")
+        setProjectAdded(true)
+ 
 
 
 
@@ -697,12 +702,12 @@ const HomeScreen = ({ navigation }) => {
   }
 
 
-  const uploadImage = async (imageUri, pid) => {
+  const uploadImage = async (imageUri,workId,index, pid) => {
     const formData = new FormData();
     formData.append('image', {
       uri: imageUri,
       type: 'image/jpeg', // Adjust according to your image type
-      name: `Img${pid}.jpg`, // Use any desired file name here
+      name: `Img${workId}_${index + 1}.jpg`, // Use any desired file name here
     });
 
     try {
@@ -749,24 +754,53 @@ const HomeScreen = ({ navigation }) => {
 
 
   const __startCamera = async () => {
+    // Check if the user has already taken 5 photos
     if (imageArray.length >= 5) {
-      Alert.alert(
-        'Maximum 5 photos allowed',
-        'You already took 5 photos.'
-      );
-      return;
+        Alert.alert(
+            'Maximum 5 photos allowed',
+            'You already took 5 photos.'
+        );
+        return;
     }
 
-    const { status } = await Camera.requestCameraPermissionsAsync()
-    if (status === 'granted') {
-      // start the camera
-      setStartCamera(true)
+    // Request camera permissions
+    const { status: cameraStatus } = await Camera.getCameraPermissionsAsync();
 
+    
+    // Request media library permissions
+    const { status: mediaLibraryStatus } = await MediaLibrary.requestPermissionsAsync();
+    
+    // Request microphone permissions
+    const { status: audioStatus } = await Camera.requestMicrophonePermissionsAsync();
+
+    // Check if all required permissions are granted
+    if (cameraStatus === 'granted' && mediaLibraryStatus === 'granted' && audioStatus === 'granted') {
+        setStartCamera(true); // Start the camera if permissions are granted
     } else {
-      Alert.alert('Access denied')
+        Alert.alert('Permission denied', 'You need to allow camera and media library access.'); // Show an alert if permissions are denied
     }
-  }
+};
 
+//   const __startCamera = async () => {
+//     const getCameraPermission = async () => {
+//       const permissionResponse = await Camera.getCameraPermissionsAsync();
+//       console.log(permissionResponse);
+//   };
+  
+//   getCameraPermission();
+//     // let { status: existingStatus } = await Camera.getCameraPermissionsAsync();
+    
+//     // if (existingStatus !== 'granted') {
+//     //     const { status } = await Camera.requestCameraPermissionsAsync();
+//     //     existingStatus = status;
+//     // }
+
+//     // if (existingStatus === 'granted') {
+//     //     setStartCamera(true);
+//     // } else {
+//     //     Alert.alert('Permission denied', 'You need to allow camera access.');
+//     // }
+// }; 
   const __retakePicture = (uri) => {
     // console.log(uri)
 
@@ -824,11 +858,14 @@ const HomeScreen = ({ navigation }) => {
         <CameraPreview photo={capturedImage} savePhoto={saveToGallery} retakePicture={__retakePicture} handleBack={handleBackPress} />
       ) : <>
 
+
+
         <Camera
-          ref={(ref) => setCameraRef(ref)}
-          style={{ flex: 1, width: "100%" }}
-          type={Camera.Constants.Type.back}
-        />
+        ref={(ref) => setCameraRef(ref)}
+    style={{ flex: 1, width: "100%" }}
+    type={type}
+        //   // type={Camera.Constants.Type.back}
+         />
         <Text style={{ position: "absolute", top: 60, left: 10, color: "white" }}>
           Lat: {location?.latitude}, Long: {location?.longitude}, Accuracy : {location?.accuracy.toFixed(2)}
         </Text>

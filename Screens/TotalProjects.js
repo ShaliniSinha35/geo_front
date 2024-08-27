@@ -9,7 +9,7 @@ const TotalProjects = ({navigation}) => {
 
     const width=Dimensions.get('screen').width
 
-    const {employeeId}= useAuth()
+    const {employeeId,projectAdded} = useAuth()
 
 
     const [completedProjects,setCompletedProjects]= useState(null)
@@ -103,7 +103,7 @@ const TotalProjects = ({navigation}) => {
 
 useEffect(()=>{
     getAssignProjects()
-},[employeeId])
+},[employeeId,projectAdded])
 
 
 
@@ -137,7 +137,7 @@ useEffect(()=>{
 <View style={{width:width,alignItems:"center",marginTop:20}}>
 
     {
-        console.log(projectAssignId)
+        console.log(projectAssignId,districts)
     }
 
 {

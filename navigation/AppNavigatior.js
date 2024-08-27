@@ -17,6 +17,8 @@ import LoginPage from '../Screens/LoginPage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../Screens/AuthContext';
 import ProjectAssign from '../Screens/ProjectAssign';
+import CompleteProjects from '../Screens/CompleteProjects';
+import TotalProjects from '../Screens/TotalProjects';
 
 
 const Stack = createStackNavigator();
@@ -71,14 +73,14 @@ export const AppNavigator = () => {
         {
             id: 2,
             name: "Projects",
-            url: "projects",
+            url: "completeProjects",
             icon: <MaterialIcons name="work" size={22} color="white" />,
         },
 
         {
             id: 3,
             name: "Add Projects",
-            url: "addProject",
+            url: "Add Projects",
             icon: <MaterialIcons name="assignment-add" size={24} color="white" />,
         },
 
@@ -144,6 +146,18 @@ export const AppNavigator = () => {
 <Stack.Screen
                     name="projectAssign"
                     component={ProjectAssign}
+                    options={{ headerShown: false }}
+                />
+
+<Stack.Screen
+                    name="completeProjects"
+                    component={CompleteProjects}
+                    options={{ headerShown: false }}
+                />
+
+<Stack.Screen
+                    name="totalProjects"
+                    component={TotalProjects}
                     options={{ headerShown: false }}
                 />
 
@@ -296,7 +310,7 @@ export const AppNavigator = () => {
 
 
                 <Tab.Screen
-                    name="Project"
+                    name="Add Projects"
                     component={ProjectAssign}
                     options={{
                         tabBarLabel: "Add Your Project",

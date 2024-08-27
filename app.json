@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "GeoLocation",
-    "slug": "geolocation",
+    "slug": "geolocation-wea9g94xo3hvvrs-xg68p",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -57,9 +57,15 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "2227847a-fb76-4f16-8a87-b69c7ca935fb"
+        "projectId": "62148942-731d-4d6d-9724-aef29ade08a3"
       }
     },
-    "owner": "shalinisinha2"
+    "owner": "zenwebmaniasolutions",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/62148942-731d-4d6d-9724-aef29ade08a3"
+    }
   }
 }
