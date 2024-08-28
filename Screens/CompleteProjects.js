@@ -19,7 +19,7 @@ import {
   import { MaterialCommunityIcons } from "@expo/vector-icons";
   import { MaterialIcons } from '@expo/vector-icons';
   import Header from "../Components/Header";
-  
+  import moment from 'moment-timezone';
   import axios from 'axios'
   import { useAuth } from './AuthContext'
   
@@ -88,150 +88,117 @@ import {
   <View>
   { projects.length==0 ? <ActivityIndicator style={{marginTop:20}}></ActivityIndicator>
           :
-         projects.map((project)=>(
-        
-          
-        
-  
-          <View style={{width:Dimensions.get('screen').width,paddingBottom:20}}>
-          
-     
+          (
+            projects.map((project) => {
+              // Format the entry_date to Kolkata time with AM/PM
+              const formattedDate = moment
+                .tz(project.entry_date, 'Asia/Kolkata')
+                .format('DD-MM-YYYY hh:mm ');
 
-  
-  <View style={{ padding: 10,alignItems:"center",borderColor:"#001349", borderWidth:2,margin:10,borderRadius:20,backgroundColor:"#fff",paddingTop:20 }}>
-  
+              return (
+                <View key={project.project_id} style={{ width: Dimensions.get('screen').width, paddingBottom: 20 }}>
+                  <View style={{ padding: 10, alignItems: "center", borderColor: "#001349", borderWidth: 2, margin: 10, borderRadius: 20, backgroundColor: "#fff", paddingTop: 20 }}>
+                    <Text allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
+                      Employee name: {project.employee_name}
+                    </Text>
+                    <Text
+                      style={{
+                        height: 1,
+                        borderColor: "#D0D0D0",
+                        borderWidth: 0.5,
+                        marginTop: 20,
+                        marginBottom: 20,
+                        width: 300
+                      }}
+                    />
+                    <Text allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
+                      Beneficiary name: {project.farmer_name}
+                    </Text>
+                    <Text
+                      style={{
+                        height: 1,
+                        borderColor: "#D0D0D0",
+                        borderWidth: 0.5,
+                        marginTop: 20,
+                        marginBottom: 20,
+                        width: 300
+                      }}
+                    />
+                    <Text allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
+                      Activity: {project.activity_names}
+                    </Text>
+                    <Text
+                      style={{
+                        height: 1,
+                        borderColor: "#D0D0D0",
+                        borderWidth: 0.5,
+                        marginBottom: 20,
+                        marginTop: 20,
+                        width: 300
+                      }}
+                    />
+                    <Text allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
+                      Activity Type: {project.activity_type_name}
+                    </Text>
+                    <Text
+                      style={{
+                        height: 1,
+                        borderColor: "#D0D0D0",
+                        borderWidth: 0.5,
+                        marginTop: 20,
+                        marginBottom: 20,
+                        width: 300
+                      }}
+                    />
+                    <Text allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
+                      Project Area: {project.project_name}
+                    </Text>
+                    <Text
+                      style={{
+                        height: 1,
+                        borderColor: "#D0D0D0",
+                        borderWidth: 0.5,
+                        marginBottom: 20,
+                        marginTop: 20,
+                        width: 300
+                      }}
+                    />
+                    <Text allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
+                      Date: {formattedDate}
+                    </Text>
+                    <Text
+                      style={{
+                        height: 1,
+                        borderColor: "#D0D0D0",
+                        borderWidth: 0.5,
+                        marginBottom: 20,
+                        marginTop: 20,
+                        width: 300
+                      }}
+                    />
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#DA5050",
+                        padding: 12,
+                        borderRadius: 20,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginHorizontal: 30,
+                        marginTop: 10
+                      }}
+                      onPress={() => navigation.navigate("projects", { project: project })}
+                    >
+                      <Text allowFontScaling={false} style={{ color: "white", fontSize: 15 }}>View Details</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              );
+            })
+          )}
+        </View>
+      </View>
+    </ScrollView>
 
-  <Text  allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
-    Employee name: {project.employee_name}
-    </Text>
-  
-    <Text
-      style={{
-        height: 1,
-        borderColor: "#D0D0D0",
-        borderWidth: 0.5,
-        marginTop: 20,
-        marginBottom: 20,
-        width:300
-      }}
-    />
-
-  <Text  allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
-    Beneficiary name: {project.farmer_name}
-    </Text>
-  
-    <Text
-      style={{
-        height: 1,
-        borderColor: "#D0D0D0",
-        borderWidth: 0.5,
-        marginTop: 20,
-        marginBottom: 20,
-        width:300
-      }}
-    />
-  
-     <Text  allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
-    Activity: {project.activity_names}
-    </Text>
-  
-    <Text
-      style={{
-        height: 1,
-        borderColor: "#D0D0D0",
-        borderWidth: 0.5,
-        marginBottom: 20,
-        marginTop: 20,
-        width:300
-      }}
-    />
-      <Text  allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
-   Activity Type: {project.activity_type_name}
-    </Text>
-
-    <Text
-      style={{
-        height: 1,
-        borderColor: "#D0D0D0",
-        borderWidth: 0.5,
-        marginTop: 20,
-        marginBottom: 20,
-        width:300
-      }}
-    />
-    <Text  allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
-   Project Area: {project.project_name}
-    </Text>
-   
-    <Text
-      style={{
-        height: 1,
-        borderColor: "#D0D0D0",
-        borderWidth: 0.5,
-        marginBottom: 20,
-        marginTop: 20,
-        width:300
-      }}
-    />
-
-<Text  allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
-    Date: {project.entry_date}
-    </Text>
-  
-    <Text
-      style={{
-        height: 1,
-        borderColor: "#D0D0D0",
-        borderWidth: 0.5,
-        marginBottom: 20,
-        marginTop: 20,
-        width:300
-      }}
-    />
-  
-   
-   
-   
-   
-  
-   
-   
-  
-  
-  
-    
-  
-   
-  <TouchableOpacity
-    style={{
-      backgroundColor: "#DA5050",
-      padding: 12,
-      borderRadius: 20,
-      justifyContent: "center",
-      alignItems: "center",
-      marginHorizontal: 30,
-      marginTop:10
-    }}
-    onPress={()=>navigation.navigate("projects",{project:project})}
-  
-  >
-    <Text allowFontScaling={false} style={{color:"white",fontSize:15}}>View Details</Text>
-  </TouchableOpacity>
-      
-    
-  </View>
-  
-  
- 
-          </View>
-        
-         ))
-        }
-     
-  </View>
-     
-     </View>
-      </ScrollView>
       
     )
   }

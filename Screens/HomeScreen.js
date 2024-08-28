@@ -440,7 +440,7 @@ const HomeScreen = ({ navigation }) => {
     if (cameraRef) {
       try {
 
-        const accuracyThreshold = 10; // Set your desired accuracy threshold in meters
+        const accuracyThreshold = 20; // Set your desired accuracy threshold in meters
 
         if (location.accuracy <= accuracyThreshold) {
           const photo = await cameraRef.takePictureAsync();

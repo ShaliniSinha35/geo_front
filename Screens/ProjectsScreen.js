@@ -108,7 +108,6 @@ projects &&
     <ImageBackground
       style={{ width:Dimensions.get('screen').width, height:350, marginTop: 20, resizeMode: "contain" }}
       source={{ uri: `https://pmksybihar.info/upload/app/${projects.image_url}` }}
-     
       key={projects.id}
       imageStyle={{borderRadius:20}}
     >
@@ -135,6 +134,21 @@ projects &&
 
   <Text  allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
     Beneficiary name: {projects.farmer_name}
+    </Text>
+  
+    <Text
+      style={{
+        height: 1,
+        borderColor: "#D0D0D0",
+        borderWidth: 0.5,
+        marginTop: 10,
+      }}
+    />
+
+
+
+  <Text  allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
+  Work ID: {projects.workid}
     </Text>
   
     <Text

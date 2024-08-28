@@ -27,6 +27,7 @@
     "expo-status-bar": "~1.12.1",
     "expo-updates": "~0.25.24",
     "formik": "^2.4.5",
+    "moment-timezone": "^0.5.45",
     "react": "18.2.0",
     "react-hook-form": "^7.50.1",
     "react-native": "0.74.5",
