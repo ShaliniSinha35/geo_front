@@ -114,6 +114,20 @@ import {
                     <Text allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
                       Beneficiary name: {project.farmer_name}
                     </Text>
+
+                    <Text
+                      style={{
+                        height: 1,
+                        borderColor: "#D0D0D0",
+                        borderWidth: 0.5,
+                        marginTop: 20,
+                        marginBottom: 20,
+                        width: 300
+                      }}
+                    />
+                    <Text allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
+                     Work ID: {project.workid}
+                    </Text>
                     <Text
                       style={{
                         height: 1,

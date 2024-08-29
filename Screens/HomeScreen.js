@@ -440,7 +440,7 @@ const HomeScreen = ({ navigation }) => {
     if (cameraRef) {
       try {
 
-        const accuracyThreshold = 20; // Set your desired accuracy threshold in meters
+        const accuracyThreshold = 10; // Set your desired accuracy threshold in meters
 
         if (location.accuracy <= accuracyThreshold) {
           const photo = await cameraRef.takePictureAsync();
@@ -563,126 +563,125 @@ const HomeScreen = ({ navigation }) => {
 
 
   const handleSubmit = async () => {
-
+    
+    let errors = {};
   
-    if (values.activity == "") {
-      errors.activity = "Activity is Required"
+    if (!values.activity) {
+      errors.activity = "Activity is required";
     }
-
-
-    if (imageArray.length == 0) {
-      errors.image = "Image is Required"
+  
+    if (imageArray.length === 0) {
+      errors.image = "Image is required";
     }
-
-
-    setErrors({ ...errors })
-    console.log("error", errors)
+  
+    // Set errors and reset them after 3 seconds
+    setErrors(errors);
     setTimeout(() => {
       setErrors({
-      
         activity: '',
         shortDetail: '',
         image: ''
-      })
+      });
     }, 3000);
-
- 
-
-
-
-    if (values.activity != "" && imageArray.length >= 1) {
-
-
-
+  
+    // Proceed only if there are no validation errors
+    if (Object.keys(errors).length === 0) {
       try {
-
-        // https://pmksybihar.info/geo/
-        // https://pmksybihar.info/geo/
-
-    
-
-        console.log(beneficary)
+        console.log("Sending data to server:", {
+          emp_id: employeeId,
+          dist: distId,
+          block: blockId,
+          panchayat: panchayatId,
+          village: villageId,
+          farmer_name: beneficary,
+          projectArea: projectAreaId,
+          activityType: activityId,
+          activityName: activityNameId,
+          imageArray: imageArray,
+          desc: values.shortDetail,
+          workid: workId,
+          length: length,
+          breadth: breadth,
+          height: height
+        });
+  
         const response = await axios.post('https://pmksybihar.info/geo/addProject', {
           emp_id: employeeId,
           dist: distId,
           block: blockId,
           panchayat: panchayatId,
           village: villageId,
-          farmer_name:beneficary,
+          farmer_name: beneficary,
           projectArea: projectAreaId,
           activityType: activityId,
-          activityName: activityNameId ,
+          activityName: activityNameId,
           imageArray: imageArray,
           desc: values.shortDetail,
-          workid:workId,
-          length:length,
-          breadth:breadth,
-          height:height
+          workid: workId,
+          length: length,
+          breadth: breadth,
+          height: height
         });
   
-
         console.log('Post successful:', response.data);
 
-        if (response.data) {
-
-          for (let i = 0; i < imageArray.length; i++) {
-            console.log("442", imageArray[i].uri)
-            uploadImage(imageArray[i].uri, workId,i, response.data)
-          }
+        console.log(response.data.message)
+  
+        // Handle photo limit exceeded case
+        if (response.data.message) {
+          Alert.alert(response.data.message);
+          return;
         }
-
-        Alert.alert('Success', 'Activity submitted successfully');
-
-      
-       await  updateStatus()
-
-        setDist('');
-        setBlock('');
-        setPanchayat('');
-        setVillage('');
-        setProjectArea('');
-        setWorkId('');
-        setActivityName('');
-        setLength('');
-        setBreadth('');
-        setHeight('');
-        setValues({
-          ...values,
-          panchayat:'',
-          district:'',
-          block:'',
-          village: '',
-          projectArea: '',
-          workId:''
-        });
-     
-        setImageArray([])
-
-        navigation.navigate("Home")
-        setProjectAdded(true)
- 
-
-
-
+  
+        // Handle successful response
+        if (response.data) {
+          for (let i = 0; i < imageArray.length; i++) {
+            console.log("Uploading image:", imageArray[i].uri);
+            await uploadImage(imageArray[i].uri, workId, i, response.data);
+          }
+  
+          Alert.alert('Success', 'Activity submitted successfully');
+          
+          // Update status
+          await updateStatus();
+  
+          // Reset form fields
+          setDist('');
+          setBlock('');
+          setPanchayat('');
+          setVillage('');
+          setProjectArea('');
+          setWorkId('');
+          setActivityName('');
+          setLength('');
+          setBreadth('');
+          setHeight('');
+          setValues({
+            ...values,
+            panchayat: '',
+            district: '',
+            block: '',
+            village: '',
+            projectArea: '',
+            workId: ''
+          });
+          setImageArray([]);
+  
+          // Navigate to home and update state
+          navigation.navigate("Home");
+          setProjectAdded(true);
+        }
+  
       } catch (error) {
-
         console.error('Error posting data:', error);
-        Alert.alert('Error', 'Failed to submit data');
-
+        Alert.alert('Validation failed, Activity not submitted');
       }
-
-
-
+    } else {
+      console.log("Validation failed, form not submitted");
+      Alert.alert('Validation failed, Activity not submitted');
     }
-
-
-    else {
-      console.log("521")
-    }
-
-
-
   };
+  
 
 
   const updateStatus = async () => {
@@ -703,11 +702,17 @@ const HomeScreen = ({ navigation }) => {
 
 
   const uploadImage = async (imageUri,workId,index, pid) => {
+
+    const parts = imageUri.split('/');
+    const imageName = parts[parts.length - 1];
+    const shortName = imageName.slice(0, 8) + '.jpg';
+console.log(shortName); 
+  
     const formData = new FormData();
     formData.append('image', {
       uri: imageUri,
       type: 'image/jpeg', // Adjust according to your image type
-      name: `Img${workId}_${index + 1}.jpg`, // Use any desired file name here
+      name:`${workId}_${shortName}`, // Use any desired file name here
     });
 
     try {
