@@ -291,14 +291,32 @@ const HomeScreen = ({ navigation }) => {
       },
     });
 
-    setAllWorkId(res1.data)
-    setData(res1.data)
+    const usedWorkId = await axios.get("https://pmksybihar.info/geo/deActiveWorkId",{
+      params:{
+        empId:employeeId
+      }
+    })
+
+    const deActiveWorkId= usedWorkId.data
+    console.log("deActiveUserId",deActiveWorkId)
+
+
+    const deActiveWorkIdsSet = new Set(deActiveWorkId.map(item => item.workid));
+
+// Filter out WorkIds that are in the deActiveWorkIdsSet
+const filteredWorkId = res1.data.filter(item => !deActiveWorkIdsSet.has(item.workid));
+
+console.log('Filtered WorkId:', filteredWorkId);
+
+    console.log(res1.data)
+    setAllWorkId(filteredWorkId)
+    setData(filteredWorkId)
    
 
 
  
   
-    if (res1.data.length !== 0 && values.workId) {
+    if (filteredWorkId.length !== 0 && values.workId) {
       const res2 = await axios.get("https://pmksybihar.info/geo/workDetails", {
         params: {
           workId: values.workId,
@@ -641,7 +659,7 @@ const HomeScreen = ({ navigation }) => {
           }
   
           Alert.alert('Success', 'Activity submitted successfully');
-          
+          setProjectAdded(true);
           // Update status
           await updateStatus();
   
@@ -669,7 +687,7 @@ const HomeScreen = ({ navigation }) => {
   
           // Navigate to home and update state
           navigation.navigate("Home");
-          setProjectAdded(true);
+         
         }
   
       } catch (error) {
@@ -712,7 +730,7 @@ console.log(shortName);
     formData.append('image', {
       uri: imageUri,
       type: 'image/jpeg', // Adjust according to your image type
-      name:`${workId}_${shortName}`, // Use any desired file name here
+      name: `${workId}_${index + 1}.jpg`, // Use any desired file name here
     });
 
     try {

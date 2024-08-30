@@ -5,11 +5,14 @@ import axios from 'axios';
 import { useAuth } from '../Screens/AuthContext';
 const width = Dimensions.get('screen').width
 
+
 const Section1 = ({navigation}) => {
 
   const {employeeId,projectAdded} = useAuth()
 const [totalCompleteProjects,setTotalCompleteProjects]= useState(0)
 const [totalpendingProjects,setTotalPendingProjects]= useState(0)
+
+console.log(projectAdded,"sec1")
   const getProjectDetails = async()=>{
 
     try{

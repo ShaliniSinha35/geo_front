@@ -305,7 +305,7 @@ projects &&
      <Text  allowFontScaling={false} style={{ fontSize: 15, fontWeight: "600" }}>
        Date: {   moment
       .tz(image.date_time, 'Asia/Kolkata')
-      .format('DD-MM-YYYY hh:mm ')}
+      .format('DD-MM-YYYY hh:mm A')}
        </Text>
    
     

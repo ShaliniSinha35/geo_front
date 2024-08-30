@@ -91,9 +91,10 @@ import {
           (
             projects.map((project) => {
               // Format the entry_date to Kolkata time with AM/PM
+              console.log(project.entry_date)
               const formattedDate = moment
                 .tz(project.entry_date, 'Asia/Kolkata')
-                .format('DD-MM-YYYY hh:mm ');
+                .format('DD-MM-YYYY hh:mm A');
 
               return (
                 <View key={project.project_id} style={{ width: Dimensions.get('screen').width, paddingBottom: 20 }}>
